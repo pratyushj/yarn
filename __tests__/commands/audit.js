@@ -254,6 +254,18 @@ test('calls reporter auditSummary with correct data', () => {
   });
 });
 
+test('calls reporter auditSummary with correct data for external registry', () => {
+  return runAudit(
+    [],
+    {registry: 'https://registry.npmjs.org/'},
+    'single-vulnerable-dep-installed',
+    (config, reporter) => {
+      const apiResponse = getAuditResponse(config);
+      expect(reporter.auditSummary).toBeCalledWith(apiResponse.metadata);
+    },
+  );
+});
+
 test.concurrent('sends correct dependency map to audit api for private package.', () => {
   const expectedApiPost = {
     install: [],
